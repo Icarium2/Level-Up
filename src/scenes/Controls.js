@@ -1,5 +1,4 @@
 import Phaser from 'phaser';
-import TitleScreen from './TitleScreen';
 
 class Controls extends Phaser.Scene {
   constructor() {
@@ -8,7 +7,6 @@ class Controls extends Phaser.Scene {
 
   preload() {
     this.load.image('controls', '/src/assets/images/controls-screen.png');
-    this.load.audio('introMusic', '/src/assets/music/intro.wav');
   }
 
   create() {
@@ -17,10 +15,6 @@ class Controls extends Phaser.Scene {
     controls.on('pointerup', () => {
       this.scene.start('titleScreen');
     });
-
-    const introMusic = this.sound.add('introMusic');
-    introMusic.autoplay = true;
-    introMusic.play();
   }
 }
 
