@@ -11,6 +11,7 @@ Add the installation instructions.
 # Changelog
 
 - [#1 - Added a title screen](https://github.com/Icarium2/Level-Up/pull/1/commits/241cf2586a7f0d354492bea0ba19c1b99618a941)
+- [#2 - Added the first tilemap and cleaned up some code]
 
 # Code Review
 
