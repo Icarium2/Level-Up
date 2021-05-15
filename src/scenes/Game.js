@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import TitleScreen from './TitleScreen';
 
 class Game extends Phaser.Scene {
   constructor() {
@@ -6,13 +7,16 @@ class Game extends Phaser.Scene {
   }
 
   preload() {
-    this.load.audio('introMusic', '/src/assets/music/soundtrack.wav');
+    this.load.image('map_tiles', '/src/assets/images/cave.png');
+    this.load.tilemapTiledJSON('map', '/src/assets/images/cave01.json');
   }
 
   create() {
-    const introMusic = this.sound.add('introMusic');
-    introMusic.autoplay = true;
-    introMusic.play();
+    const map = this.make.tilemap({ key: 'map' });
+    const tileset = map.addTilesetImage('cave', 'map_tiles');
+    map.createStaticLayer('ground', tileset);
+    map.createStaticLayer('walls', tileset);
+    map.createStaticLayer('extra', tileset);
   }
 }
 

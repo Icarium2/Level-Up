@@ -1,5 +1,4 @@
 import Phaser from 'phaser';
-import Controls from './Controls';
 import Game from './Game';
 
 class TitleScreen extends Phaser.Scene {
@@ -14,7 +13,6 @@ class TitleScreen extends Phaser.Scene {
     this.load.image('controlsButton', '/src/assets/images/controls-button.png');
     this.load.image('controlsScreen', '/src/assets/images/controls-screen.png');
     this.load.image('startGame', '/src/assets/images/start-game.png');
-
     this.load.audio('introMusic', '/src/assets/music/intro.wav');
   }
 
@@ -38,7 +36,7 @@ class TitleScreen extends Phaser.Scene {
 
     playButton.setInteractive();
     playButton.on('pointerup', () => {
-      this.scene.start('game');
+      this.scene.start('Game');
     });
   }
 }

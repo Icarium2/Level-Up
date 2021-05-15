@@ -20,11 +20,6 @@ const config = {
 
 const game = new Phaser.Game(config);
 
-function preload() {
-  this.load.image('cave', 'assets/map.png');
-}
+function preload() {}
 
-function create() {
-  //  A simple background for our game
-  this.add.image(400, 300, 'cave');
-}
+function create() {}
