@@ -1,5 +1,4 @@
 import Phaser from 'phaser';
-import Game from './Game';
 
 class TitleScreen extends Phaser.Scene {
   constructor() {
