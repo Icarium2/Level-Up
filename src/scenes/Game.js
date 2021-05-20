@@ -6,6 +6,9 @@ class Game extends Phaser.Scene {
   }
 
   preload() {
+    // music
+    this.load.audio('soundtrack', '/src/assets/music/soundtrack.wav');
+
     // map
     this.load.image('map_tiles', '/src/assets/images/mainlevbuild.png');
     this.load.image('props', '/src/assets/images/decorative.png');
@@ -25,6 +28,14 @@ class Game extends Phaser.Scene {
   }
 
   create() {
+    // music
+    this.sound.get('introMusic').stop();
+
+    const soundtrack = this.sound.add('soundtrack');
+    soundtrack.autoplay = true;
+    soundtrack.loop = true;
+    soundtrack.play();
+
     const map = this.make.tilemap({
       key: 'map',
     });
@@ -46,9 +57,27 @@ class Game extends Phaser.Scene {
 
     // Enemies
     const enemy = this.add.sprite(90, 100, 'enemy');
+
+    // Weapon
+    this.anims.createFromAseprite('shuriken');
+    this.weapon = this.add.sprite(100, 100, 'shuriken');
+    //this.weapon.play('throw-left', true);
+    this.weapon.play('throw-right', true);
+
+    // -- Använda denna så att vapnet utgår från spriten
+    //weapon.trackSprite(sprite, 14, 0);
+    // -- Definera skjut-knapp
+    //fireButton = this.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
+
+    this.anims.createFromAseprite('shuriken-rotated');
+    // kan ej använda weapon två ggr. döp om!
+    //this.weapon = this.add.sprite(100, 100, 'shuriken-rotated');
+    //this.weapon.play('throw-up', true);
+    //this.weapon.play('throw-down', true);
   }
 
   update() {
+    //Walk animation
     this.player.setVelocity(0);
     if (this.cursors.left.isDown) {
       this.player.play('left', true);
@@ -63,6 +92,7 @@ class Game extends Phaser.Scene {
       this.player.play('down', true);
       this.player.setVelocityY(100);
     }
+    //Throw weapon
   }
 }
 

@@ -8,7 +8,7 @@ class TitleScreen extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('titleScreen', '/src/assets/images/titleScreen.png');
+    this.load.image('titleScreen', '/src/assets/images/title-screen.png');
     this.load.image('controlsButton', '/src/assets/images/controls-button.png');
     this.load.image('controlsScreen', '/src/assets/images/controls-screen.png');
     this.load.image('startGame', '/src/assets/images/start-game.png');
@@ -22,16 +22,14 @@ class TitleScreen extends Phaser.Scene {
     introMusic.autoplay = true;
     introMusic.play();
 
-    let controlsButton = this.add
-      .image(400, 430, 'controlsButton')
-      .setScale(1.2);
+    let controlsButton = this.add.image(400, 450, 'controlsButton').setScale(1);
 
     controlsButton.setInteractive();
     controlsButton.on('pointerup', () => {
       this.scene.start('controls');
     });
 
-    let playButton = this.add.image(400, 500, 'startGame').setScale(1.2);
+    let playButton = this.add.image(400, 510, 'startGame').setScale(1);
 
     playButton.setInteractive();
     playButton.on('pointerup', () => {
