@@ -40,8 +40,32 @@ class Game extends Phaser.Scene {
     this.player.play({ key: 'front' });
     this.player.setCollideWorldBounds(true);
     this.cameras.main.startFollow(this.player, true, 0.05, 0.05);
+
+    //Health Bar
+
+    let healthBar = this.makeBar(140, 100, 0x2ecc71);
+    this.setValue(healthBar, 100);
   }
 
+  makeBar(x, y, color) {
+    //draw
+    let bar = this.add.graphics();
+
+    //color
+    bar.fillStyle(color, 1);
+
+    //fill
+    bar.fillRect(0, 0, 200, 50);
+
+    //position
+    bar.x = 10;
+    bar.y = 10;
+    return bar;
+  }
+  setValue(bar, percentage) {
+    //scale
+    bar.scaleX = percentage / 100;
+  }
   update() {
     this.player.setVelocity(0);
     if (this.cursors.left.isDown) {
