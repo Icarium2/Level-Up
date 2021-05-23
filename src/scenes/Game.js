@@ -66,8 +66,8 @@ class Game extends Phaser.Scene {
     this.cameras.main.startFollow(this.player, true, 0.05, 0.05);
 
     // Enemies
+    const enemy = this.physics.add.sprite(90, 100, 'enemy');
     this.anims.createFromAseprite('enemy');
-    const enemy = this.add.sprite(90, 100, 'enemy');
     enemy.play('enemy-down', true);
 
     // Weapon
@@ -86,10 +86,13 @@ class Game extends Phaser.Scene {
     //this.weapon.trackSprite(this.player, 0, 0);
     // -- Definera skjut-knapp
     //this.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
+    this.physics.add.collider(this.player, enemy);
+    console.log(this.player);
+    console.log(enemy);
   }
 
   update() {
-    //Walk animation
+    //Player walk animation
     this.player.setVelocity(0);
     if (this.cursors.left.isDown) {
       this.player.play('left', true);
