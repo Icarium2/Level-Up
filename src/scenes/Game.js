@@ -25,6 +25,10 @@ class Game extends Phaser.Scene {
     // enemy
     this.load.path = '/src/assets/sprite/';
     this.load.aseprite('enemy', 'enemy.png', 'enemy.json');
+
+    //health ui
+    this.load.image('heart-empty', '/src/assets/images/ui_heart_empty.png');
+    this.load.image('heart-full', '/src/assets/images/ui_heart_full.png');
   }
 
   create() {
