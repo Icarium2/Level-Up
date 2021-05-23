@@ -22,6 +22,14 @@ class Game extends Phaser.Scene {
     this.load.path = '/src/assets/sprite/';
     this.load.aseprite('shuriken', 'shuriken.png', 'shuriken.json');
 
+    // weapon rotated
+    this.load.path = '/src/assets/sprite/';
+    this.load.aseprite(
+      'shuriken-rotated',
+      'shuriken-rotated.png',
+      'shuriken-rotated.json'
+    );
+
     // enemy
     this.load.path = '/src/assets/sprite/';
     this.load.aseprite('enemy', 'enemy.png', 'enemy.json');
@@ -34,7 +42,6 @@ class Game extends Phaser.Scene {
   create() {
     // music
     this.sound.get('introMusic').stop();
-
     const soundtrack = this.sound.add('soundtrack');
     soundtrack.autoplay = true;
     soundtrack.loop = true;
@@ -60,24 +67,26 @@ class Game extends Phaser.Scene {
     this.cameras.main.startFollow(this.player, true, 0.05, 0.05);
 
     // Enemies
+    this.anims.createFromAseprite('enemy');
     const enemy = this.add.sprite(90, 100, 'enemy');
+    enemy.play('enemy-down', true);
 
     // Weapon
     this.anims.createFromAseprite('shuriken');
     this.weapon = this.add.sprite(100, 100, 'shuriken');
-    //this.weapon.play('throw-left', true);
     this.weapon.play('throw-right', true);
 
-    // -- Använda denna så att vapnet utgår från spriten
-    //weapon.trackSprite(sprite, 14, 0);
-    // -- Definera skjut-knapp
-    //fireButton = this.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
+    //weapon.play('throw-left', true);
 
     this.anims.createFromAseprite('shuriken-rotated');
-    // kan ej använda weapon två ggr. döp om!
-    //this.weapon = this.add.sprite(100, 100, 'shuriken-rotated');
-    //this.weapon.play('throw-up', true);
-    //this.weapon.play('throw-down', true);
+    this.weapon2 = this.add.sprite(100, 100, 'shuriken-rotated');
+    this.weapon2.play('throw-down', true);
+    //weapon.play('throw-up', true);
+
+    // -- Använda denna så att vapnet utgår från spriten
+    //this.weapon.trackSprite(this.player, 0, 0);
+    // -- Definera skjut-knapp
+    //this.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
   }
 
   update() {
@@ -96,7 +105,6 @@ class Game extends Phaser.Scene {
       this.player.play('down', true);
       this.player.setVelocityY(100);
     }
-    //Throw weapon
   }
 }
 
