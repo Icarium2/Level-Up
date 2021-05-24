@@ -36,8 +36,10 @@ class Game extends Phaser.Scene {
   }
 
   create() {
-    // UI
+    // UI & controls
     this.scene.run('game-ui');
+    this.cameras.main.setBounds(0, 0, 1600, 1600);
+    this.cursors = this.input.keyboard.createCursorKeys();
 
     // music
     this.sound.get('introMusic').stop();
@@ -46,6 +48,7 @@ class Game extends Phaser.Scene {
     soundtrack.loop = true;
     soundtrack.play();
 
+    // map
     const map = this.make.tilemap({
       key: 'map',
     });
@@ -55,18 +58,15 @@ class Game extends Phaser.Scene {
     map.createLayer('objects', mapProps);
 
     this.player = this.physics.add.sprite(70, 70, 'front');
+    const enemy = this.physics.add.sprite(90, 100, 'enemy');
 
-    this.cameras.main.setBounds(0, 0, 1600, 1600);
-    this.cursors = this.input.keyboard.createCursorKeys();
-
-    // Sprite
+    // player sprite
     this.anims.createFromAseprite('sprite');
     this.player.play({ key: 'front' });
     this.player.setCollideWorldBounds(true);
     this.cameras.main.startFollow(this.player, true, 0.05, 0.05);
 
     // Enemies
-    const enemy = this.physics.add.sprite(90, 100, 'enemy');
     this.anims.createFromAseprite('enemy');
     enemy.play('enemy-down', true);
 
