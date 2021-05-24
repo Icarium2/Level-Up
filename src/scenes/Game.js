@@ -1,28 +1,36 @@
-import Phaser, { LEFT } from 'phaser';
+import Phaser from 'phaser';
 
 class Game extends Phaser.Scene {
   constructor() {
     super({ key: 'Game' });
+    this.lastDamageTaken = 0;
   }
+  takeDamage = () => {
+    const currentTime = Date.now();
+    if (currentTime > this.lastDamageTaken + 2000) {
+      this.lastDamageTaken = currentTime;
+      window.store.currentHP = window.store.currentHP - 1;
+    }
+  };
 
   preload() {
-    // music
+    // load music
     this.load.audio('soundtrack', '/src/assets/music/soundtrack.wav');
 
-    // map
+    // load map
     this.load.image('map_tiles', '/src/assets/images/mainlevbuild.png');
     this.load.image('props', '/src/assets/images/decorative.png');
     this.load.tilemapTiledJSON('map', '/src/assets/images/dungeon3.json');
 
-    // character sprites
+    // load character sprites
     this.load.path = '/src/assets/sprite/';
     this.load.aseprite('sprite', 'sprite.png', 'sprite.json');
 
-    // weapon
+    // load weapon
     this.load.path = '/src/assets/sprite/';
     this.load.aseprite('shuriken', 'shuriken.png', 'shuriken.json');
 
-    // weapon rotated
+    // load weapon rotated
     this.load.path = '/src/assets/sprite/';
     this.load.aseprite(
       'shuriken-rotated',
@@ -30,7 +38,7 @@ class Game extends Phaser.Scene {
       'shuriken-rotated.json'
     );
 
-    // enemy
+    // load enemy
     this.load.path = '/src/assets/sprite/';
     this.load.aseprite('enemy', 'enemy.png', 'enemy.json');
   }
@@ -81,9 +89,7 @@ class Game extends Phaser.Scene {
     //this.weapon.trackSprite(this.player, 0, 0);
     // -- Definera skjut-knapp
     //this.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
-    this.physics.add.collider(this.player, enemy);
-    console.log(this.player);
-    console.log(enemy);
+    this.physics.add.collider(this.player, enemy, this.takeDamage);
   }
 
   update() {
@@ -102,6 +108,8 @@ class Game extends Phaser.Scene {
       this.player.play('down', true);
       this.player.setVelocityY(100);
     }
+
+    /*
     //Weapon animation
     if (this.spacebar.isDown && this.cursors.left._justDown) {
       this.weapon = this.add.sprite(
@@ -132,6 +140,7 @@ class Game extends Phaser.Scene {
       );
       this.weapon.play('throw-down', true);
     }
+    */
   }
 }
 

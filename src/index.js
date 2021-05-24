@@ -21,5 +21,6 @@ const config = {
   },
   scene: [TitleScreen, Controls, Game, GameUI],
 };
+window.store = { currentHP: 3, maxHP: 3 };
 
-var game = new Phaser.Game(config);
+const game = new Phaser.Game(config);
