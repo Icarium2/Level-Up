@@ -22,4 +22,8 @@ const config = {
   scene: [TitleScreen, Controls, Game, GameUI],
 };
 
+var follower;
+var path;
+var graphics;
+
 var game = new Phaser.Game(config);
