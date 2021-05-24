@@ -1,4 +1,4 @@
-import Phaser from 'phaser';
+import Phaser, { LEFT } from 'phaser';
 
 class Game extends Phaser.Scene {
   constructor() {
@@ -55,6 +55,9 @@ class Game extends Phaser.Scene {
 
     this.cameras.main.setBounds(0, 0, 1600, 1600);
     this.cursors = this.input.keyboard.createCursorKeys();
+    this.spacebar = this.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.SPACE
+    );
 
     // Sprite
     this.anims.createFromAseprite('sprite');
@@ -69,20 +72,7 @@ class Game extends Phaser.Scene {
 
     // Weapon
     this.anims.createFromAseprite('shuriken');
-    this.weapon = this.add.sprite(100, 100, 'shuriken');
-    this.weapon.play('throw-right', true);
-
-    //weapon.play('throw-left', true);
-
     this.anims.createFromAseprite('shuriken-rotated');
-    this.weapon2 = this.add.sprite(100, 100, 'shuriken-rotated');
-    this.weapon2.play('throw-down', true);
-    //weapon.play('throw-up', true);
-
-    // -- Använda denna så att vapnet utgår från spriten
-    //this.weapon.trackSprite(this.player, 0, 0);
-    // -- Definera skjut-knapp
-    //this.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
   }
 
   update() {
@@ -100,6 +90,36 @@ class Game extends Phaser.Scene {
     } else if (this.cursors.down.isDown) {
       this.player.play('down', true);
       this.player.setVelocityY(100);
+    }
+    //Weapon animation
+    if (this.spacebar.isDown && this.cursors.left._justDown) {
+      this.weapon = this.add.sprite(
+        this.player.x - 120,
+        this.player.y,
+        'shuriken'
+      );
+      this.weapon.play('throw-left', true);
+    } else if (this.spacebar.isDown && this.cursors.right._justDown) {
+      this.weapon = this.add.sprite(
+        this.player.x + 120,
+        this.player.y,
+        'shuriken'
+      );
+      this.weapon.play('throw-right', true);
+    } else if (this.spacebar.isDown && this.cursors.up._justDown) {
+      this.weapon = this.add.sprite(
+        this.player.x,
+        this.player.y - 120,
+        'shuriken-rotated'
+      );
+      this.weapon.play('throw-up', true);
+    } else if (this.spacebar.isDown && this.cursors.down._justDown) {
+      this.weapon = this.add.sprite(
+        this.player.x,
+        this.player.y + 120,
+        'shuriken-rotated'
+      );
+      this.weapon.play('throw-down', true);
     }
   }
 }
