@@ -1,4 +1,4 @@
-import Phaser from 'phaser';
+import Phaser, { LEFT } from 'phaser';
 
 class Game extends Phaser.Scene {
   constructor() {
@@ -36,6 +36,11 @@ class Game extends Phaser.Scene {
   }
 
   create() {
+    // UI & controls
+    this.scene.run('game-ui');
+    this.cameras.main.setBounds(0, 0, 1600, 1600);
+    this.cursors = this.input.keyboard.createCursorKeys();
+
     // music
     this.sound.get('introMusic').stop();
     const soundtrack = this.sound.add('soundtrack');
@@ -43,6 +48,7 @@ class Game extends Phaser.Scene {
     soundtrack.loop = true;
     soundtrack.play();
 
+    // map
     const map = this.make.tilemap({
       key: 'map',
     });
@@ -52,11 +58,9 @@ class Game extends Phaser.Scene {
     map.createLayer('objects', mapProps);
 
     this.player = this.physics.add.sprite(70, 70, 'front');
+    const enemy = this.physics.add.sprite(90, 100, 'enemy');
 
-    this.cameras.main.setBounds(0, 0, 1600, 1600);
-    this.cursors = this.input.keyboard.createCursorKeys();
-
-    // Sprite
+    // player sprite
     this.anims.createFromAseprite('sprite');
     this.player.play({ key: 'front' });
     this.player.setCollideWorldBounds(true);
@@ -64,16 +68,10 @@ class Game extends Phaser.Scene {
 
     // Enemies
     this.anims.createFromAseprite('enemy');
-    const enemy = this.add.sprite(90, 100, 'enemy');
     enemy.play('enemy-down', true);
 
     // Weapon
     this.anims.createFromAseprite('shuriken');
-    this.weapon = this.add.sprite(100, 100, 'shuriken');
-    this.weapon.play('throw-right', true);
-
-    //weapon.play('throw-left', true);
-
     this.anims.createFromAseprite('shuriken-rotated');
     this.weapon2 = this.add.sprite(100, 100, 'shuriken-rotated');
     this.weapon2.play('throw-down', true);
@@ -83,10 +81,13 @@ class Game extends Phaser.Scene {
     //this.weapon.trackSprite(this.player, 0, 0);
     // -- Definera skjut-knapp
     //this.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
+    this.physics.add.collider(this.player, enemy);
+    console.log(this.player);
+    console.log(enemy);
   }
 
   update() {
-    //Walk animation
+    //Player walk animation
     this.player.setVelocity(0);
     if (this.cursors.left.isDown) {
       this.player.play('left', true);
@@ -100,6 +101,36 @@ class Game extends Phaser.Scene {
     } else if (this.cursors.down.isDown) {
       this.player.play('down', true);
       this.player.setVelocityY(100);
+    }
+    //Weapon animation
+    if (this.spacebar.isDown && this.cursors.left._justDown) {
+      this.weapon = this.add.sprite(
+        this.player.x - 120,
+        this.player.y,
+        'shuriken'
+      );
+      this.weapon.play('throw-left', true);
+    } else if (this.spacebar.isDown && this.cursors.right._justDown) {
+      this.weapon = this.add.sprite(
+        this.player.x + 120,
+        this.player.y,
+        'shuriken'
+      );
+      this.weapon.play('throw-right', true);
+    } else if (this.spacebar.isDown && this.cursors.up._justDown) {
+      this.weapon = this.add.sprite(
+        this.player.x,
+        this.player.y - 120,
+        'shuriken-rotated'
+      );
+      this.weapon.play('throw-up', true);
+    } else if (this.spacebar.isDown && this.cursors.down._justDown) {
+      this.weapon = this.add.sprite(
+        this.player.x,
+        this.player.y + 120,
+        'shuriken-rotated'
+      );
+      this.weapon.play('throw-down', true);
     }
   }
 }
