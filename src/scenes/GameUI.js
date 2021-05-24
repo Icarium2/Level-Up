@@ -11,18 +11,30 @@ export default class GameUI extends Phaser.Scene {
     this.load.image('ui-heart-full', '/src/assets/images/ui_heart_full.png');
   }
   create() {
-    const hearts = this.add.group({
+    this.hearts = this.add.group({
       classType: Phaser.GameObjects.Image,
     });
-
-    hearts.createMultiple({
-      key: 'ui-heart-full',
-      setXY: {
-        x: 10,
-        y: 10,
-        stepX: 16,
+  }
+  update() {
+    this.hearts.createMultiple([
+      {
+        key: 'ui-heart-empty',
+        setXY: {
+          x: 10,
+          y: 10,
+          stepX: 16,
+        },
+        quantity: window.store.maxHP,
       },
-      quantity: 3,
-    });
+      {
+        key: 'ui-heart-full',
+        setXY: {
+          x: 10,
+          y: 10,
+          stepX: 16,
+        },
+        quantity: window.store.currentHP,
+      },
+    ]);
   }
 }
