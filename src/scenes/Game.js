@@ -19,8 +19,9 @@ class Game extends Phaser.Scene {
 
     // load map
     this.load.image('map_tiles', '/src/assets/images/mainlevbuild.png');
+    this.load.image('torch', '/src/assets/images/torch_1.png');
     this.load.image('props', '/src/assets/images/decorative.png');
-    this.load.tilemapTiledJSON('map', '/src/assets/images/dungeon3.json');
+    this.load.tilemapTiledJSON('map', '/src/assets/images/catacombs01.json');
 
     // load character sprites
     this.load.path = '/src/assets/sprite/';
@@ -41,13 +42,23 @@ class Game extends Phaser.Scene {
     // load enemy
     this.load.path = '/src/assets/sprite/';
     this.load.aseprite('enemy', 'enemy.png', 'enemy.json');
+
+    // move path
+    var url;
+    url =
+      'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexpathfollowerplugin.min.js';
+    this.load.plugin('rexpathfollowerplugin', url, true);
   }
 
   create() {
     // UI & controls
     this.scene.run('game-ui');
     this.cameras.main.setBounds(0, 0, 1600, 1600);
+    this.cameras.main.setZoom(2.5);
     this.cursors = this.input.keyboard.createCursorKeys();
+    this.spacebar = this.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.SPACE
+    );
 
     // music
     this.sound.get('introMusic').stop();
@@ -60,15 +71,18 @@ class Game extends Phaser.Scene {
     const map = this.make.tilemap({
       key: 'map',
     });
-    const tileset = map.addTilesetImage('catacombs', 'map_tiles');
-    const mapProps = map.addTilesetImage('props', 'props');
-    map.createLayer('wallsandfloor', tileset);
-    map.createLayer('objects', mapProps);
+    const tileset = map.addTilesetImage('catacomb', 'map_tiles');
+    const mapProps = map.addTilesetImage('decorative', 'props');
+    map.createLayer('objects', tileset);
+    map.createLayer('floor', tileset);
+    const walls = map.createLayer('walls', tileset);
+    walls.setCollisionByProperty({ collides: true });
 
-    this.player = this.physics.add.sprite(70, 70, 'front');
-    const enemy = this.physics.add.sprite(90, 100, 'enemy');
+    //this.player = this.physics.add.sprite(500, 150, 'front');
+    //const enemy = this.physics.add.sprite(800, 150, 'enemy');
 
     // player sprite
+    this.player = this.physics.add.sprite(240, 380, 'front');
     this.anims.createFromAseprite('sprite');
     this.player.play({ key: 'front' });
     this.player.setCollideWorldBounds(true);
@@ -76,20 +90,44 @@ class Game extends Phaser.Scene {
 
     // Enemies
     this.anims.createFromAseprite('enemy');
-    enemy.play('enemy-down', true);
+    // Path
+    var path = this.add.path(70, 500).lineTo(300, 500);
+    var graphics = this.add.graphics({
+      // lineStyle: {
+      //   width: 1,
+      //   alpha: 1,
+      // },
+    });
+    path.draw(graphics);
+    const enemy = this.physics.add.sprite(0, 0, 'enemy');
+    enemy.pathFollower = this.plugins.get('rexpathfollowerplugin').add(enemy, {
+      path: path,
+      t: 0,
+    });
+
+    this.tweens.add({
+      targets: enemy.pathFollower,
+      t: 1,
+      ease: 'Linear',
+      duration: 4000,
+      repeat: -1,
+      yoyo: true,
+    });
+    // END
 
     // Weapon
     this.anims.createFromAseprite('shuriken');
     this.anims.createFromAseprite('shuriken-rotated');
-    this.weapon2 = this.add.sprite(100, 100, 'shuriken-rotated');
-    this.weapon2.play('throw-down', true);
-    //weapon.play('throw-up', true);
 
-    // -- Använda denna så att vapnet utgår från spriten
-    //this.weapon.trackSprite(this.player, 0, 0);
-    // -- Definera skjut-knapp
-    //this.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
+    this.physics.add.collider(this.player, this.enemy);
+    console.log(this.player);
+    console.log(enemy);
+    // this.weapon2 = this.add.sprite(100, 100, 'shuriken-rotated');
+    // this.weapon2.play('throw-down', true);
+
+    //Collision
     this.physics.add.collider(this.player, enemy, this.takeDamage);
+    this.physics.add.collider(this.player, walls);
   }
 
   update() {
@@ -108,8 +146,6 @@ class Game extends Phaser.Scene {
       this.player.play('down', true);
       this.player.setVelocityY(100);
     }
-
-    /*
     //Weapon animation
     if (this.spacebar.isDown && this.cursors.left._justDown) {
       this.weapon = this.add.sprite(
@@ -140,7 +176,10 @@ class Game extends Phaser.Scene {
       );
       this.weapon.play('throw-down', true);
     }
-    */
+
+    // Enemy path
+
+    // END
   }
 }
 

@@ -24,6 +24,7 @@ export default class GameUI extends Phaser.Scene {
           y: 10,
           stepX: 16,
         },
+        scale: 4,
         quantity: window.store.maxHP,
       },
       {
