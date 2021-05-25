@@ -94,95 +94,97 @@ class Game extends Phaser.Scene {
     // Enemy
     this.anims.createFromAseprite('enemy');
     // Enemy Paths
-    var path = this.add.path(70, 500).lineTo(300, 500);
-    var path2 = this.add.path(430, 700).lineTo(150, 700);
-    var path3 = this.add.path(700, 700).lineTo(700, 900);
-    var path4 = this.add.path(500, 1050).lineTo(500, 1250);
-    var path5 = this.add.path(900, 1250).lineTo(900, 1050);
-    var path6 = this.add.path(280, 150).lineTo(480, 150);
-    var path7 = this.add.path(1200, 550).lineTo(1200, 850);
-    var path8 = this.add.path(1500, 850).lineTo(1500, 550);
-    var path9 = this.add.path(1200, 450).lineTo(1500, 450);
+    let path = this.add.path(70, 500).lineTo(300, 500);
+    let path2 = this.add.path(430, 700).lineTo(150, 700);
+    let path3 = this.add.path(700, 700).lineTo(700, 900);
+    let path4 = this.add.path(500, 1050).lineTo(500, 1250);
+    let path5 = this.add.path(900, 1250).lineTo(900, 1050);
+    let path6 = this.add.path(280, 150).lineTo(480, 150);
+    let path7 = this.add.path(1200, 550).lineTo(1200, 850);
+    let path8 = this.add.path(1500, 850).lineTo(1500, 550);
+    let path9 = this.add.path(1200, 450).lineTo(1500, 450);
 
-    const enemy = this.physics.add.sprite(0, 0, 'enemy');
-    enemy.pathFollower = this.plugins.get('rexpathfollowerplugin').add(enemy, {
-      path: path,
-      t: 0,
-    });
-
-    const enemy2 = this.physics.add.sprite(0, 0, 'enemy');
-    enemy2.pathFollower = this.plugins
+    this.enemy = this.physics.add.sprite(0, 0, 'enemy');
+    this.enemy.pathFollower = this.plugins
       .get('rexpathfollowerplugin')
-      .add(enemy2, {
+      .add(this.enemy, {
+        path: path,
+        t: 0,
+      });
+
+    this.enemy2 = this.physics.add.sprite(0, 0, 'enemy');
+    this.enemy2.pathFollower = this.plugins
+      .get('rexpathfollowerplugin')
+      .add(this.enemy2, {
         path: path2,
         t: 0,
       });
 
-    const enemy3 = this.physics.add.sprite(0, 0, 'enemy');
-    enemy3.pathFollower = this.plugins
+    this.enemy3 = this.physics.add.sprite(0, 0, 'enemy');
+    this.enemy3.pathFollower = this.plugins
       .get('rexpathfollowerplugin')
-      .add(enemy3, {
+      .add(this.enemy3, {
         path: path3,
         t: 0,
       });
 
-    const enemy4 = this.physics.add.sprite(0, 0, 'enemy');
-    enemy4.pathFollower = this.plugins
+    this.enemy4 = this.physics.add.sprite(0, 0, 'enemy');
+    this.enemy4.pathFollower = this.plugins
       .get('rexpathfollowerplugin')
-      .add(enemy4, {
+      .add(this.enemy4, {
         path: path4,
         t: 0,
       });
 
-    const enemy5 = this.physics.add.sprite(0, 0, 'enemy');
-    enemy5.pathFollower = this.plugins
+    this.enemy5 = this.physics.add.sprite(0, 0, 'enemy');
+    this.enemy5.pathFollower = this.plugins
       .get('rexpathfollowerplugin')
-      .add(enemy5, {
+      .add(this.enemy5, {
         path: path5,
         t: 0,
       });
 
-    const enemy6 = this.physics.add.sprite(0, 0, 'enemy');
-    enemy6.pathFollower = this.plugins
+    this.enemy6 = this.physics.add.sprite(0, 0, 'enemy');
+    this.enemy6.pathFollower = this.plugins
       .get('rexpathfollowerplugin')
-      .add(enemy6, {
+      .add(this.enemy6, {
         path: path6,
         t: 0,
       });
 
-    const enemy7 = this.physics.add.sprite(0, 0, 'enemy');
-    enemy7.pathFollower = this.plugins
+    this.enemy7 = this.physics.add.sprite(0, 0, 'enemy');
+    this.enemy7.pathFollower = this.plugins
       .get('rexpathfollowerplugin')
-      .add(enemy7, {
+      .add(this.enemy7, {
         path: path7,
         t: 0,
       });
-    const enemy8 = this.physics.add.sprite(0, 0, 'enemy');
-    enemy8.pathFollower = this.plugins
+    this.enemy8 = this.physics.add.sprite(0, 0, 'enemy');
+    this.enemy8.pathFollower = this.plugins
       .get('rexpathfollowerplugin')
-      .add(enemy8, {
+      .add(this.enemy8, {
         path: path8,
         t: 0,
       });
-    const enemy9 = this.physics.add.sprite(0, 0, 'enemy');
-    enemy9.pathFollower = this.plugins
+    this.enemy9 = this.physics.add.sprite(0, 0, 'enemy');
+    this.enemy9.pathFollower = this.plugins
       .get('rexpathfollowerplugin')
-      .add(enemy9, {
+      .add(this.enemy9, {
         path: path9,
         t: 0,
       });
 
     this.tweens.add({
       targets: [
-        enemy.pathFollower,
-        enemy2.pathFollower,
-        enemy3.pathFollower,
-        enemy4.pathFollower,
-        enemy5.pathFollower,
-        enemy6.pathFollower,
-        enemy7.pathFollower,
-        enemy8.pathFollower,
-        enemy9.pathFollower,
+        this.enemy.pathFollower,
+        this.enemy2.pathFollower,
+        this.enemy3.pathFollower,
+        this.enemy4.pathFollower,
+        this.enemy5.pathFollower,
+        this.enemy6.pathFollower,
+        this.enemy7.pathFollower,
+        this.enemy8.pathFollower,
+        this.enemy9.pathFollower,
       ],
       t: 1,
       ease: 'Linear',
@@ -197,13 +199,36 @@ class Game extends Phaser.Scene {
     //Collision
     this.physics.add.collider(
       this.player,
-      //enemy,
-      [enemy, enemy2, enemy3, enemy4, enemy5, enemy6, enemy7, enemy8, enemy9],
+      [
+        this.enemy,
+        this.enemy2,
+        this.enemy3,
+        this.enemy4,
+        this.enemy5,
+        this.enemy6,
+        this.enemy7,
+        this.enemy8,
+        this.enemy9,
+      ],
       this.takeDamage
     );
     this.physics.add.collider(this.player, walls);
     this.physics.add.collider(this.enemy, walls);
-    this.physics.add.collider(this.enemy, this.shurikens, this.enemyHit);
+    this.physics.add.collider(
+      [
+        this.enemy,
+        this.enemy2,
+        this.enemy3,
+        this.enemy4,
+        this.enemy5,
+        this.enemy6,
+        this.enemy7,
+        this.enemy8,
+        this.enemy9,
+      ],
+      this.shurikens,
+      this.enemyHit
+    );
   }
 
   update(time) {
