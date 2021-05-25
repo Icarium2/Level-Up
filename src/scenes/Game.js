@@ -92,18 +92,15 @@ class Game extends Phaser.Scene {
 
     // Enemies
     this.anims.createFromAseprite('enemy');
-    // Path
-    const path = this.add.path(70, 500).lineTo(300, 500);
-    const graphics = this.add.graphics({
-      // lineStyle: {
-      //   width: 1,
-      //   alpha: 1,
-      // },
-    });
+    // Paths
+    var path = this.add.path(70, 500).lineTo(300, 500);
+    var path2 = this.add.path(70, 700).lineTo(300, 700);
+    var graphics = this.add.graphics({});
     path.draw(graphics);
     const enemy = this.physics.add.sprite(0, 0, 'enemy');
     enemy.pathFollower = this.plugins.get('rexpathfollowerplugin').add(enemy, {
       path: path,
+      path2,
       t: 0,
     });
 
@@ -121,8 +118,9 @@ class Game extends Phaser.Scene {
     this.anims.createFromAseprite('shuriken');
     this.anims.createFromAseprite('shuriken-rotated');
 
-    // this.weapon2 = this.add.sprite(100, 100, 'shuriken-rotated');
-    // this.weapon2.play('throw-down', true);
+    this.physics.add.collider(this.player, this.enemy);
+    console.log(this.player);
+    console.log(enemy);
 
     //Collision
     this.physics.add.collider(this.player, enemy, this.takeDamage);
@@ -175,10 +173,6 @@ class Game extends Phaser.Scene {
       );
       this.weapon.play('throw-down', true);
     }
-
-    // Enemy path
-
-    // END
   }
 }
 

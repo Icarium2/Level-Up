@@ -10,7 +10,7 @@ class Controls extends Phaser.Scene {
   }
 
   create() {
-    const controls = this.add.image(400, 320, 'controls').setScale(0.55);
+    const controls = this.add.image(800, 600, 'controls').setScale(1);
     controls.setInteractive();
     controls.on('pointerup', () => {
       this.scene.start('titleScreen');
