@@ -85,7 +85,7 @@ class Game extends Phaser.Scene {
     this.player.play({ key: 'front' });
     this.player.setCollideWorldBounds(true);
     this.cameras.main.startFollow(this.player, true, 0.05, 0.05);
-    this.player.setScale(0.5);
+    this.player.setScale(0.6);
 
     // Enemies
     this.anims.createFromAseprite('enemy');
