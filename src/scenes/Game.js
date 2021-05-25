@@ -12,6 +12,9 @@ class Game extends Phaser.Scene {
       this.lastDamageTaken = currentTime;
       window.store.currentHP = window.store.currentHP - 1;
     }
+    if (window.store.currentHP < 1) {
+      this.scene.start('gameOver');
+    }
   };
 
   preload() {
@@ -118,7 +121,6 @@ class Game extends Phaser.Scene {
     this.anims.createFromAseprite('shuriken');
     this.anims.createFromAseprite('shuriken-rotated');
 
-    this.physics.add.collider(this.player, this.enemy);
     // this.weapon2 = this.add.sprite(100, 100, 'shuriken-rotated');
     // this.weapon2.play('throw-down', true);
 

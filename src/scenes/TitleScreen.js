@@ -16,7 +16,7 @@ class TitleScreen extends Phaser.Scene {
   }
 
   create() {
-    const titleScreen = this.add.image(400, 320, 'titleScreen').setScale(0.55);
+    this.add.image(400, 320, 'titleScreen').setScale(0.55);
 
     const introMusic = this.sound.add('introMusic');
     introMusic.autoplay = true;
