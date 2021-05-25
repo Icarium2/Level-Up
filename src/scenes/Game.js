@@ -16,6 +16,7 @@ class Game extends Phaser.Scene {
       this.ouchie.play();
     }
     if (window.store.currentHP < 1) {
+      this.sound.get('soundtrack').stop();
       this.scene.start('gameOver');
     }
   };
