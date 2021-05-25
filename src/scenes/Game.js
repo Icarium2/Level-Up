@@ -13,6 +13,7 @@ class Game extends Phaser.Scene {
     if (currentTime > this.lastDamageTaken + 2000) {
       this.lastDamageTaken = currentTime;
       window.store.currentHP = window.store.currentHP - 1;
+      this.ouchie.play();
     }
     if (window.store.currentHP < 1) {
       this.scene.start('gameOver');
@@ -23,12 +24,15 @@ class Game extends Phaser.Scene {
     enemy.disableBody(true, true);
     this.shurikens.remove(shuriken);
     shuriken.destroy();
+    this.ghostOuch.play();
   };
 
   preload() {
-    // load music
+    // load audio
     this.load.audio('soundtrack', './assets/music/soundtrack.wav');
-
+    this.load.audio('knifeSound', './assets/soundfx/knifethrow.mp3');
+    this.load.audio('ouchie', './assets/soundfx/ouch.mp3');
+    this.load.audio('ghostOuch', './assets/soundfx/ghostdeath.mp3');
     // load map
     this.load.image('map_tiles', './assets/images/mainlevbuild.png');
     this.load.image('props', './assets/images/decorative.png');
@@ -56,18 +60,21 @@ class Game extends Phaser.Scene {
     // UI & controls
     this.scene.run('game-ui');
     this.cameras.main.setBounds(0, 0, 1600, 1600);
-    this.cameras.main.setZoom(1);
+    this.cameras.main.setZoom(3);
     this.cursors = this.input.keyboard.createCursorKeys();
     this.spacebar = this.input.keyboard.addKey(
       Phaser.Input.Keyboard.KeyCodes.SPACE
     );
 
-    // music
+    // audio
     this.sound.get('introMusic').stop();
     const soundtrack = this.sound.add('soundtrack');
     soundtrack.autoplay = true;
     soundtrack.loop = true;
     soundtrack.play();
+    this.ouchie = this.sound.add('ouchie');
+    this.ghostOuch = this.sound.add('ghostOuch');
+    this.knifeSound = this.sound.add('knifeSound');
 
     // map
     const map = this.make.tilemap({
@@ -258,6 +265,7 @@ class Game extends Phaser.Scene {
       this.cursors.left._justDown &&
       this.player.isThrowing == false
     ) {
+      this.knifeSound.play();
       this.weapon = this.add.sprite(this.player.x, this.player.y, 'star');
       this.weapon.setScale(0.02);
       this.shurikens.add(this.weapon);
@@ -269,6 +277,7 @@ class Game extends Phaser.Scene {
       this.cursors.right._justDown &&
       this.player.isThrowing == false
     ) {
+      this.knifeSound.play();
       this.weapon = this.add.sprite(this.player.x, this.player.y, 'star');
       this.weapon.setScale(0.02);
       this.shurikens.add(this.weapon);
@@ -280,6 +289,7 @@ class Game extends Phaser.Scene {
       this.cursors.up._justDown &&
       this.player.isThrowing == false
     ) {
+      this.knifeSound.play();
       this.weapon = this.add.sprite(this.player.x, this.player.y, 'star');
       this.weapon.setScale(0.02);
       this.shurikens.add(this.weapon);
@@ -291,6 +301,7 @@ class Game extends Phaser.Scene {
       this.cursors.down._justDown &&
       this.player.isThrowing == false
     ) {
+      this.knifeSound.play();
       this.weapon = this.add.sprite(this.player.x, this.player.y, 'star');
       this.weapon.setScale(0.02);
       this.shurikens.add(this.weapon);

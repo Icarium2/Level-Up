@@ -6,7 +6,11 @@ Text about the project and which JavaScript library you're using. This would als
 
 # Installation
 
-Add the installation instructions.
+Clone the repository to a local folder and open the command-line and CD into the folder.
+Then run the following commands:
+
+npm install
+npm run dev
 
 # Changelog
 
@@ -46,7 +50,11 @@ Tested by the following people:
 
 Tested by the following muggles (non-coders):
 
-1. Jane Doe
-2. John Doe
-3. Jane Doe
-4. John Doe
+1. Caroline Olinder
+2. Melvin Gustavsson
+3. Nils Hjalmarsson
+4. Peter Larsson
+
+```
+
+```

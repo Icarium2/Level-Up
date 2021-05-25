@@ -16,7 +16,8 @@ class GameOver extends Phaser.Scene {
     window.addEventListener(
       'keypress',
       (k) => {
-        if (k.code == 'Enter') this.scene.start('Game');
+        if (k.code == 'Enter')
+          this.scene.start('Game'), (window.store = { currentHP: 3 });
       },
       { once: true }
     );
