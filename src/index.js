@@ -6,8 +6,8 @@ import GameUI from './scenes/GameUI';
 
 const config = {
   type: Phaser.AUTO,
-  width: 800,
-  height: 600,
+  width: 1600,
+  height: 1200,
   pixelArt: true,
   physics: {
     default: 'arcade',

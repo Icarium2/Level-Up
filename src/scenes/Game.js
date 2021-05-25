@@ -48,6 +48,7 @@ class Game extends Phaser.Scene {
     // UI & controls
     this.scene.run('game-ui');
     this.cameras.main.setBounds(0, 0, 1600, 1600);
+    this.cameras.main.setZoom(2.5);
     this.cursors = this.input.keyboard.createCursorKeys();
     this.spacebar = this.input.keyboard.addKey(
       Phaser.Input.Keyboard.KeyCodes.SPACE
@@ -68,7 +69,8 @@ class Game extends Phaser.Scene {
     const mapProps = map.addTilesetImage('decorative', 'props');
     map.createLayer('objects', tileset);
     map.createLayer('floor', tileset);
-    map.createLayer('walls', tileset);
+    const walls = map.createLayer('walls', tileset);
+    walls.setCollisionByProperty({ collides: true });
 
     this.player = this.physics.add.sprite(500, 150, 'front');
     const enemy = this.physics.add.sprite(800, 150, 'enemy');
@@ -91,6 +93,7 @@ class Game extends Phaser.Scene {
 
     //Collision
     this.physics.add.collider(this.player, enemy, this.takeDamage);
+    this.physics.add.collider(this.player, walls);
   }
 
   update() {
