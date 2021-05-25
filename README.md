@@ -1,8 +1,11 @@
-INSERT MANDATORY GIF
+![](https://media0.giphy.com/media/9AooPIXbwxI40/giphy.gif?cid=ecf05e47v7wycaec03ddh4s2waezqop0kmu33gkv1qe4f1tb&rid=giphy.gif&ct=g)
 
-# Project Title
+# Dungeon Quest
 
-Text about the project and which JavaScript library you're using. This would also be a great place to link the game on Netlify.
+Yrgo Web Developers class of 2020's final school project for the term.
+We decided to make a top down rpg rogue-like game using Phaser.js and Javascript.
+
+Try the demo here: https://dungeonrunner.netlify.app
 
 # Installation
 
@@ -25,10 +28,10 @@ npm run dev
 
 Tested by the following people:
 
-1. Jane Doe
-2. John Doe
-3. Jane Doe
-4. John Doe
+1. Rikard Segerqvist
+2. Martin Hansson
+3. Jacob Gustavsson
+4. Felix Östergren
 
 Tested by the following muggles (non-coders):
 
