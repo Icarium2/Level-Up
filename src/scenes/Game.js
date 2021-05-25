@@ -4,7 +4,9 @@ class Game extends Phaser.Scene {
   constructor() {
     super({ key: 'Game' });
     this.lastDamageTaken = 0;
+    this.shurikens;
   }
+
   //Taking damage and phasing out becoming unable to take dmg for 2 sec (when hit)
   takeDamage = () => {
     const currentTime = Date.now();
@@ -15,6 +17,12 @@ class Game extends Phaser.Scene {
     if (window.store.currentHP < 1) {
       this.scene.start('gameOver');
     }
+  };
+
+  enemyHit = (enemy, shuriken) => {
+    enemy.disableBody(true, true);
+    this.shurikens.remove(shuriken);
+    shuriken.destroy();
   };
 
   preload() {
@@ -30,17 +38,8 @@ class Game extends Phaser.Scene {
     this.load.path = './assets/sprite/';
     this.load.aseprite('sprite', 'sprite.png', 'sprite.json');
 
-    // load weapon
-    this.load.path = './assets/sprite/';
-    this.load.aseprite('shuriken', 'shuriken.png', 'shuriken.json');
-
-    // load weapon rotated
-    this.load.path = './assets/sprite/';
-    this.load.aseprite(
-      'shuriken-rotated',
-      'shuriken-rotated.png',
-      'shuriken-rotated.json'
-    );
+    //load weapon
+    this.load.image('star', 'star.png');
 
     // load enemy
     this.load.path = './assets/sprite/';
@@ -57,7 +56,7 @@ class Game extends Phaser.Scene {
     // UI & controls
     this.scene.run('game-ui');
     this.cameras.main.setBounds(0, 0, 1600, 1600);
-    this.cameras.main.setZoom(2.5);
+    this.cameras.main.setZoom(3);
     this.cursors = this.input.keyboard.createCursorKeys();
     this.spacebar = this.input.keyboard.addKey(
       Phaser.Input.Keyboard.KeyCodes.SPACE
@@ -88,46 +87,51 @@ class Game extends Phaser.Scene {
     this.player.play({ key: 'front' });
     this.player.setCollideWorldBounds(true);
     this.cameras.main.startFollow(this.player, true, 0.05, 0.05);
-    this.player.setScale(0.6);
+    this.player.isThrowing = false;
+    this.player.lastThrow = 0;
+    this.player.setScale(0.5);
 
     // Enemies
     this.anims.createFromAseprite('enemy');
+
     // Paths
     var path = this.add.path(70, 500).lineTo(300, 500);
     var path2 = this.add.path(70, 700).lineTo(300, 700);
     var graphics = this.add.graphics({});
     path.draw(graphics);
-    const enemy = this.physics.add.sprite(0, 0, 'enemy');
-    enemy.pathFollower = this.plugins.get('rexpathfollowerplugin').add(enemy, {
-      path: path,
-      path2,
-      t: 0,
-    });
-
+    this.enemy = this.physics.add.sprite(0, 0, 'enemy');
+    this.enemy.setCollideWorldBounds(true);
+    this.enemy.pathFollower = this.plugins
+      .get('rexpathfollowerplugin')
+      .add(this.enemy, {
+        path: path,
+        path2,
+        t: 0,
+      });
     this.tweens.add({
-      targets: enemy.pathFollower,
+      targets: this.enemy.pathFollower,
       t: 1,
       ease: 'Linear',
       duration: 4000,
       repeat: -1,
       yoyo: true,
     });
-    // END
 
     // Weapon
-    this.anims.createFromAseprite('shuriken');
-    this.anims.createFromAseprite('shuriken-rotated');
-
-    this.physics.add.collider(this.player, this.enemy);
-    console.log(this.player);
-    console.log(enemy);
+    this.shurikens = this.physics.add.group();
 
     //Collision
-    this.physics.add.collider(this.player, enemy, this.takeDamage);
+    this.physics.add.collider(this.player, this.enemy, this.takeDamage);
     this.physics.add.collider(this.player, walls);
+    this.physics.add.collider(this.enemy, walls);
+    this.physics.add.collider(this.enemy, this.shurikens, this.enemyHit);
   }
 
-  update() {
+  update(time) {
+    if (time > this.cooldown) {
+      this.player.isThrowing = false;
+    }
+
     //Player walk animation
     this.player.setVelocity(0);
     if (this.cursors.left.isDown) {
@@ -143,35 +147,52 @@ class Game extends Phaser.Scene {
       this.player.play('down', true);
       this.player.setVelocityY(100);
     }
+
     //Weapon animation
-    if (this.spacebar.isDown && this.cursors.left._justDown) {
-      this.weapon = this.add.sprite(
-        this.player.x - 120,
-        this.player.y,
-        'shuriken'
-      );
-      this.weapon.play('throw-left', true);
-    } else if (this.spacebar.isDown && this.cursors.right._justDown) {
-      this.weapon = this.add.sprite(
-        this.player.x + 120,
-        this.player.y,
-        'shuriken'
-      );
-      this.weapon.play('throw-right', true);
-    } else if (this.spacebar.isDown && this.cursors.up._justDown) {
-      this.weapon = this.add.sprite(
-        this.player.x,
-        this.player.y - 120,
-        'shuriken-rotated'
-      );
-      this.weapon.play('throw-up', true);
-    } else if (this.spacebar.isDown && this.cursors.down._justDown) {
-      this.weapon = this.add.sprite(
-        this.player.x,
-        this.player.y + 120,
-        'shuriken-rotated'
-      );
-      this.weapon.play('throw-down', true);
+    if (
+      this.spacebar.isDown &&
+      this.cursors.left._justDown &&
+      this.player.isThrowing == false
+    ) {
+      this.weapon = this.add.sprite(this.player.x, this.player.y, 'star');
+      this.weapon.setScale(0.02);
+      this.shurikens.add(this.weapon);
+      this.weapon.body.velocity.x = -160;
+      this.player.isThrowing = true;
+      this.cooldown = time + 400;
+    } else if (
+      this.spacebar.isDown &&
+      this.cursors.right._justDown &&
+      this.player.isThrowing == false
+    ) {
+      this.weapon = this.add.sprite(this.player.x, this.player.y, 'star');
+      this.weapon.setScale(0.02);
+      this.shurikens.add(this.weapon);
+      this.weapon.body.velocity.x = 160;
+      this.player.isThrowing = true;
+      this.cooldown = time + 400;
+    } else if (
+      this.spacebar.isDown &&
+      this.cursors.up._justDown &&
+      this.player.isThrowing == false
+    ) {
+      this.weapon = this.add.sprite(this.player.x, this.player.y, 'star');
+      this.weapon.setScale(0.02);
+      this.shurikens.add(this.weapon);
+      this.weapon.body.velocity.y = -160;
+      this.player.isThrowing = true;
+      this.cooldown = time + 400;
+    } else if (
+      this.spacebar.isDown &&
+      this.cursors.down._justDown &&
+      this.player.isThrowing == false
+    ) {
+      this.weapon = this.add.sprite(this.player.x, this.player.y, 'star');
+      this.weapon.setScale(0.02);
+      this.shurikens.add(this.weapon);
+      this.weapon.body.velocity.y = 160;
+      this.player.isThrowing = true;
+      this.cooldown = time + 400;
     }
   }
 }
