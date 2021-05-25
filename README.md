@@ -11,9 +11,8 @@ Try the demo here: https://dungeonrunner.netlify.app
 
 Clone the repository to a local folder and open the command-line and CD into the folder.
 Then run the following commands:
-
-npm install
-npm run dev
+`npm install`
+`npm run dev`
 
 # Changelog
 
