@@ -6,7 +6,7 @@ class Controls extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('controls', '/src/assets/images/controls-screen.png');
+    this.load.image('controls', './assets/images/controls-screen.png');
   }
 
   create() {

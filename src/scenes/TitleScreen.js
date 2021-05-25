@@ -8,11 +8,11 @@ class TitleScreen extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('titleScreen', '/src/assets/images/title-screen.png');
-    this.load.image('controlsButton', '/src/assets/images/controls-button.png');
-    this.load.image('controlsScreen', '/src/assets/images/controls-screen.png');
-    this.load.image('startGame', '/src/assets/images/start-game.png');
-    this.load.audio('introMusic', '/src/assets/music/intro.wav');
+    this.load.image('titleScreen', './assets/images/title-screen.png');
+    this.load.image('controlsButton', './assets/images/controls-button.png');
+    this.load.image('controlsScreen', './assets/images/controls-screen.png');
+    this.load.image('startGame', './assets/images/start-game.png');
+    this.load.audio('introMusic', './assets/music/intro.wav');
   }
 
   create() {
