@@ -11,7 +11,7 @@ class GameOver extends Phaser.Scene {
     this.load.image('gameOverScreen', './assets/images/gameover-screen.png');
   }
   create() {
-    this.add.image(400, 320, 'gameOverScreen').setScale(0.55);
+    this.add.image(800, 600, 'gameOverScreen').setScale(0.7);
 
     window.addEventListener(
       'keypress',
