@@ -6,8 +6,8 @@ import GameUI from './scenes/GameUI';
 
 const config = {
   type: Phaser.AUTO,
-  width: 800,
-  height: 600,
+  width: 1600,
+  height: 1200,
   pixelArt: true,
   physics: {
     default: 'arcade',
@@ -21,9 +21,6 @@ const config = {
   },
   scene: [TitleScreen, Controls, Game, GameUI],
 };
+window.store = { currentHP: 3, maxHP: 3 };
 
-var follower;
-var path;
-var graphics;
-
-var game = new Phaser.Game(config);
+const game = new Phaser.Game(config);
