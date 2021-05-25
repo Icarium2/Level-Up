@@ -5,34 +5,37 @@ class Game extends Phaser.Scene {
     super({ key: 'Game' });
     this.lastDamageTaken = 0;
   }
+  //Taking damage and phasing out becoming unable to take dmg for 2 sec (when hit)
   takeDamage = () => {
     const currentTime = Date.now();
     if (currentTime > this.lastDamageTaken + 2000) {
       this.lastDamageTaken = currentTime;
       window.store.currentHP = window.store.currentHP - 1;
     }
+    if (window.store.currentHP < 1) {
+      this.scene.start('gameOver');
+    }
   };
 
   preload() {
     // load music
-    this.load.audio('soundtrack', '/src/assets/music/soundtrack.wav');
+    this.load.audio('soundtrack', './assets/music/soundtrack.wav');
 
     // load map
-    this.load.image('map_tiles', '/src/assets/images/mainlevbuild.png');
-    this.load.image('torch', '/src/assets/images/torch_1.png');
-    this.load.image('props', '/src/assets/images/decorative.png');
-    this.load.tilemapTiledJSON('map', '/src/assets/images/catacombs01.json');
+    this.load.image('map_tiles', './assets/images/mainlevbuild.png');
+    this.load.image('props', './assets/images/decorative.png');
+    this.load.tilemapTiledJSON('map', './assets/images/catacombs01.json');
 
     // load character sprites
-    this.load.path = '/src/assets/sprite/';
+    this.load.path = './assets/sprite/';
     this.load.aseprite('sprite', 'sprite.png', 'sprite.json');
 
     // load weapon
-    this.load.path = '/src/assets/sprite/';
+    this.load.path = './assets/sprite/';
     this.load.aseprite('shuriken', 'shuriken.png', 'shuriken.json');
 
     // load weapon rotated
-    this.load.path = '/src/assets/sprite/';
+    this.load.path = './assets/sprite/';
     this.load.aseprite(
       'shuriken-rotated',
       'shuriken-rotated.png',
@@ -40,11 +43,11 @@ class Game extends Phaser.Scene {
     );
 
     // load enemy
-    this.load.path = '/src/assets/sprite/';
+    this.load.path = './assets/sprite/';
     this.load.aseprite('enemy', 'enemy.png', 'enemy.json');
 
     // move path
-    var url;
+    let url;
     url =
       'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexpathfollowerplugin.min.js';
     this.load.plugin('rexpathfollowerplugin', url, true);
@@ -73,8 +76,9 @@ class Game extends Phaser.Scene {
     });
     const tileset = map.addTilesetImage('catacomb', 'map_tiles');
     const mapProps = map.addTilesetImage('decorative', 'props');
-    map.createLayer('objects', tileset);
     map.createLayer('floor', tileset);
+    map.createLayer('props', mapProps);
+    map.createLayer('objects', tileset);
     const walls = map.createLayer('walls', tileset);
     walls.setCollisionByProperty({ collides: true });
 
@@ -84,6 +88,7 @@ class Game extends Phaser.Scene {
     this.player.play({ key: 'front' });
     this.player.setCollideWorldBounds(true);
     this.cameras.main.startFollow(this.player, true, 0.05, 0.05);
+    this.player.setScale(0.6);
 
     // Enemies
     this.anims.createFromAseprite('enemy');
