@@ -19,20 +19,28 @@ export default class GameUI extends Phaser.Scene {
     this.hearts.createMultiple([
       {
         key: 'ui-heart-empty',
-        setXY: {
-          x: 10,
-          y: 10,
-          stepX: 16,
+        setScale: {
+          x: 5,
+          y: 5,
         },
-        scale: 4,
+        setXY: {
+          x: 50,
+          y: 50,
+          stepX: 80,
+        },
+
         quantity: window.store.maxHP,
       },
       {
         key: 'ui-heart-full',
+        setScale: {
+          x: 5,
+          y: 5,
+        },
         setXY: {
-          x: 10,
-          y: 10,
-          stepX: 16,
+          x: 50,
+          y: 50,
+          stepX: 80,
         },
         quantity: window.store.currentHP,
       },
