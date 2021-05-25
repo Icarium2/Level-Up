@@ -7,8 +7,8 @@ export default class GameUI extends Phaser.Scene {
 
   preload() {
     //health ui
-    this.load.image('ui-heart-empty', '/src/assets/images/ui_heart_empty.png');
-    this.load.image('ui-heart-full', '/src/assets/images/ui_heart_full.png');
+    this.load.image('ui-heart-empty', './assets/images/ui_heart_empty.png');
+    this.load.image('ui-heart-full', './assets/images/ui_heart_full.png');
   }
   create() {
     this.hearts = this.add.group({
