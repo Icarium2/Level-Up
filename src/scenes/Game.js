@@ -93,7 +93,6 @@ class Game extends Phaser.Scene {
 
     // Enemy
     this.anims.createFromAseprite('enemy');
-<<<<<<< HEAD
     // Enemy Paths
     var path = this.add.path(70, 500).lineTo(300, 500);
     var path2 = this.add.path(430, 700).lineTo(150, 700);
@@ -185,25 +184,6 @@ class Game extends Phaser.Scene {
         enemy8.pathFollower,
         enemy9.pathFollower,
       ],
-=======
-
-    // Paths
-    var path = this.add.path(70, 500).lineTo(300, 500);
-    var path2 = this.add.path(70, 700).lineTo(300, 700);
-    var graphics = this.add.graphics({});
-    path.draw(graphics);
-    this.enemy = this.physics.add.sprite(0, 0, 'enemy');
-    this.enemy.setCollideWorldBounds(true);
-    this.enemy.pathFollower = this.plugins
-      .get('rexpathfollowerplugin')
-      .add(this.enemy, {
-        path: path,
-        path2,
-        t: 0,
-      });
-    this.tweens.add({
-      targets: this.enemy.pathFollower,
->>>>>>> e60d6cab01f7ecfb5488b4baee29ecf688fb3d8c
       t: 1,
       ease: 'Linear',
       duration: 4000,
@@ -215,15 +195,12 @@ class Game extends Phaser.Scene {
     this.shurikens = this.physics.add.group();
 
     //Collision
-<<<<<<< HEAD
     this.physics.add.collider(
       this.player,
+      //enemy,
       [enemy, enemy2, enemy3, enemy4, enemy5, enemy6, enemy7, enemy8, enemy9],
       this.takeDamage
     );
-=======
-    this.physics.add.collider(this.player, this.enemy, this.takeDamage);
->>>>>>> e60d6cab01f7ecfb5488b4baee29ecf688fb3d8c
     this.physics.add.collider(this.player, walls);
     this.physics.add.collider(this.enemy, walls);
     this.physics.add.collider(this.enemy, this.shurikens, this.enemyHit);
