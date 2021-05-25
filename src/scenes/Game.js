@@ -78,9 +78,6 @@ class Game extends Phaser.Scene {
     const walls = map.createLayer('walls', tileset);
     walls.setCollisionByProperty({ collides: true });
 
-    //this.player = this.physics.add.sprite(500, 150, 'front');
-    //const enemy = this.physics.add.sprite(800, 150, 'enemy');
-
     // player sprite
     this.player = this.physics.add.sprite(240, 380, 'front');
     this.anims.createFromAseprite('sprite');
@@ -90,14 +87,9 @@ class Game extends Phaser.Scene {
 
     // Enemies
     this.anims.createFromAseprite('enemy');
-    // Path
+    // Paths
     var path = this.add.path(70, 500).lineTo(300, 500);
-    var graphics = this.add.graphics({
-      // lineStyle: {
-      //   width: 1,
-      //   alpha: 1,
-      // },
-    });
+    var graphics = this.add.graphics({});
     path.draw(graphics);
     const enemy = this.physics.add.sprite(0, 0, 'enemy');
     enemy.pathFollower = this.plugins.get('rexpathfollowerplugin').add(enemy, {
@@ -122,8 +114,6 @@ class Game extends Phaser.Scene {
     this.physics.add.collider(this.player, this.enemy);
     console.log(this.player);
     console.log(enemy);
-    // this.weapon2 = this.add.sprite(100, 100, 'shuriken-rotated');
-    // this.weapon2.play('throw-down', true);
 
     //Collision
     this.physics.add.collider(this.player, enemy, this.takeDamage);
@@ -176,10 +166,6 @@ class Game extends Phaser.Scene {
       );
       this.weapon.play('throw-down', true);
     }
-
-    // Enemy path
-
-    // END
   }
 }
 
